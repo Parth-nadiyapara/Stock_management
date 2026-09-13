@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-surface-soft text-ink antialiased;
+  font-feature-settings: 'ss01' on;
+}
+
+/* Reusable component classes ------------------------------------------------ */
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-control px-4 py-2.5 text-sm font-medium
+    transition-colors disabled:opacity-50 disabled:pointer-events-none;
+}
+.btn-primary {
+  @apply btn bg-accent text-white hover:bg-accent-dark;
+}
+.btn-secondary {
+  @apply btn bg-white text-ink border border-border hover:border-ink-faint;
+}
+.btn-danger {
+  @apply btn bg-white text-danger border border-danger/30 hover:bg-danger/5;
+}
+.btn-ghost {
+  @apply btn text-ink-soft hover:bg-black/5;
+}
+
+.input {
+  @apply w-full rounded-control border border-border bg-white px-3.5 py-2.5 text-sm text-ink
+    placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent;
+}
+
+.label {
+  @apply mb-1.5 block text-sm font-medium text-ink-soft;
+}
+
+.card {
+  @apply rounded-card border border-border bg-white shadow-card;
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium;
+}
+.badge-warning {
+  @apply badge bg-warning/10 text-warning;
+}
+.badge-accent {
+  @apply badge bg-accent-soft text-accent-dark;
+}
+.badge-neutral {
+  @apply badge bg-black/5 text-ink-soft;
+}
+
+/* A two-option segmented control, used for the Product/Material type
+   toggle. Kept generic enough to reuse elsewhere if needed. */
+.segmented {
+  @apply inline-flex rounded-control border border-border bg-surface-soft p-1;
+}
+.segmented-option {
+  @apply flex-1 rounded-[7px] px-3 py-2 text-center text-sm font-medium text-ink-soft transition-colors;
+}
+.segmented-option-active {
+  @apply segmented-option bg-white text-accent-dark shadow-sm;
+}
+
+/* Print ----------------------------------------------------------------------
+   The bill is rendered into a dedicated #print-root element (via a
+   portal, see PrintPortal.jsx) that sits outside #root. On screen,
+   #print-root is empty/hidden and the normal app renders in #root
+   as usual. When printing, we flip which one is visible: only the
+   bill's own markup ever reaches the page, so there's nothing else
+   to hide, no leftover blank space, and no risk of a stray blank
+   page from a hidden-but-still-laid-out ancestor.
+*/
+#print-root {
+  display: none;
+}
+
+@page {
+  size: auto;
+  margin: 14mm 12mm;
+}
+
+@media print {
+  body > #root {
+    display: none !important;
+  }
+  body > #print-root {
+    display: block !important;
+  }
+}
